@@ -1,0 +1,42 @@
+<?php
+$options = get_option(PUSHUP_OPTIONS_NAME);
+?>
+<div class="wrap pushUpSocial">
+    <form method="post" action="options.php">
+        <?php settings_fields(PUSHUP_OPTIONS_GROUP); ?>
+        <input type="hidden" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_CONFIGURED ?>]"
+               value="yes"/>
+        <table class="form-table">
+            <tr valign="top">
+                <th scope="row">Community ID</th>
+                <td>
+                    <input type="text" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_COMMUNITY ?>]"
+                           value="<?php echo $options[PUSHUP_OPTION_COMMUNITY] ?>"/>
+
+                    <p class="pushup-social-helptext">
+                        If you don't have a community ID, <a href="<?php echo PushupSocial::LINK_JOIN ?>">Sign Up
+                            Here</a> When you sign up, you will be sent your community ID in an email. Please allow some
+                        time for your community ID to be generated.
+                    </p>
+                </td>
+                <!-- TODO add a "Where do I find this?" link -->
+            </tr>
+            <tr valign="top">
+                <th scope="row">Community State</th>
+                <td>
+                    <div class="onoffswitch">
+                        <input type="checkbox"
+                               name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_ENABLED ?>]"
+                               class="onoffswitch-checkbox" id="<?php echo PUSHUP_OPTION_ENABLED ?>"
+                               value="yes" <?php checked($options[PUSHUP_OPTION_ENABLED], "yes"); ?>>
+                        <label class="onoffswitch-label" for="<?php echo PUSHUP_OPTION_ENABLED ?>">
+                            <div class="onoffswitch-inner"></div>
+                            <div class="onoffswitch-switch"></div>
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <button class="pushup-social-conversion-btn blue" type="submit">Save Settings</button>
+    </form>
+</div>
