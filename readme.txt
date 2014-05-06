@@ -6,7 +6,7 @@ Requires at least: 3.8
 Tested up to: 3.9
 Stable tag: trunk
 License: BSD 3-Clause
-License URI:
+License URI: https://github.com/PushupSocial/PushupSocial-Wordpress/blob/master/LICENSE
 
 Pushup Social is the easiest way to add a social network to your WordPress site. Simply register a community and enter the ID on the settings page.
 
