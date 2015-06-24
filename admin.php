@@ -38,6 +38,7 @@ add_filter('plugin_action_links_' . PUSHUP_PLUGIN_BASENAME, function ($links) {
 });
 
 
+
 function pushup_full_template($name) {
     wp_enqueue_style("pushup.css", PUSHUP_PLUGIN_URL . '/css/pushup.css');
     get_screen_icon();
