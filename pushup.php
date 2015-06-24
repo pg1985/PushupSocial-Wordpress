@@ -3,11 +3,7 @@
 Plugin Name: Pushup Social
 Plugin URI: http://pushup.com/
 Description: The easiest way to add a social network to your WordPress site. Simply register a community and enter the ID on the settings page.
-<<<<<<< HEAD
-Version: 0.1.3
-=======
 Version: 1.4.2
->>>>>>> d39857d4715232517ca990d23df3f443b014d5df
 Author: Pushup Social
 Author URI: http://pushup.com/
 License: BSD 3 Clause

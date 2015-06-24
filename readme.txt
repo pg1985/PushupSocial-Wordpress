@@ -1,17 +1,9 @@
 === Pushup Social ===
-<<<<<<< HEAD
 Contributors: terribleplan
 Tags: pushup, social, network, community, share
 Author URI: http://pushup.com/
 Requires at least: 3.8
 Tested up to: 4.2
-=======
-Contributors: Pushup Social
-Tags: pushup, social, network, community, share
-Author URI: http://pushup.com/
-Requires at least: 3.8
-Tested up to: 4.0
->>>>>>> d39857d4715232517ca990d23df3f443b014d5df
 Stable tag: trunk
 License: BSD 3-Clause
 License URI: https://github.com/PushupSocial/PushupSocial-Wordpress/blob/master/LICENSE
