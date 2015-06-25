@@ -4,7 +4,7 @@ Tags: pushup, social, network, community, share
 Author URI: http://pushup.com/
 Requires at least: 3.8
 Tested up to: 4.2
-Stable tag: trunk
+Stable tag: 4.2
 License: BSD 3-Clause
 License URI: https://github.com/PushupSocial/PushupSocial-Wordpress/blob/master/LICENSE
 
