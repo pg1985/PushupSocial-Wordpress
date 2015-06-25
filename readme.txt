@@ -8,7 +8,7 @@ Stable tag: 4.2
 License: BSD 3-Clause
 License URI: https://github.com/PushupSocial/PushupSocial-Wordpress/blob/master/LICENSE
 
-Pushup Social is the easiest way to add a social network to your WordPress site. Simply register a community and enter the ID on the settings page.
+Pushup Social is the easiest way to add an online community to your WordPress site. Simply register a community and enter the ID on the settings page.
 
 == Description ==
 
