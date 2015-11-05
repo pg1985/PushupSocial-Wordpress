@@ -64,6 +64,9 @@ $pushup_configured = pushup_boolean_yesno(PUSHUP_OPTION_CONFIGURED);
 $pushup_configured_correctly = pushup_boolean_yesno(PUSHUP_OPTION_CONFIGURED_CORRECTLY);
 
 
+add_action("wp_ajax_save_community_id", function (){
+    $community_id = $_POST['community_id'];
+});
 
 add_action("admin_init", function () {
     register_setting(PUSHUP_OPTIONS_GROUP, PUSHUP_OPTIONS_NAME, function ($input) {
@@ -89,6 +92,8 @@ add_action('wp_head', function () use ($pushup_configured_correctly) {
 
 });
 
+add_action('admin_enqueue_scripts', 'load_scripts');
+
 function pushup_get_option($name) {
     $opts = get_option(PUSHUP_OPTIONS_NAME);
     return $opts[$name];
@@ -104,6 +109,10 @@ function pushup_yesno($bool) {
 
 function pushup_validate_yesno($val) {
     return (($val === "yes") ? $val : "no");
+}
+
+function load_scripts () {
+    wp_enqueue_script('$', 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js');
 }
 
 

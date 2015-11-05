@@ -1,7 +1,50 @@
 <?php
 $options = get_option(PUSHUP_OPTIONS_NAME);
+add_thickbox();
+//$substr_amount is the value used to strip either 'http://' or 'https://' off of URLs to be used.
+//see if the site is an http or https by checking the 5th character.  
+$substr_amount = strcmp(substr(get_option('siteurl'), 5, 1),'s') ? 7 : 8;
 ?>
+ <script>
+ $(document).ready(function($){
+
+     $('#modal_link_create').hide();
+     $('#modal_link_manage').hide();
+     var base_url = 'https://api-staging.pushup.com/network/communities?';
+     var wp_url = 'third_party_name=wordpress&third_party_id=<?php echo get_option('siteurl')?>';
+
+     $.get(base_url + wp_url,
+         function(data){
+             if (data.length == 0) {
+
+                 var email = '<?php echo get_option('admin_email')?>';
+
+                 var site_url = '<?php echo get_option('siteurl') ?>';
+                 var site_name = '<?php echo get_option('blogname') ?>';
+                 var defaultQuery = "https://registration-dev.pushup.com/";
+                 var queryString = "?email=" + email + "&url=" + site_url + "&site=" + site_name + "&partyName=wordpress&partyId=" + site_url + "?width=600&height=550&TB_iframe=true";
+
+                 $('#modal_link_create').attr("href", defaultQuery + queryString).show();
+
+             }
+             else {
+                 setCommunityId(data['network_id']);
+                 $('#modal_link_manage').show();
+             }
+         });
+ });
+
+ function setCommunityId(data) {
+     $('#community_id').val(data + "");
+ }
+
+ </script>
 <div class="wrap pushUpSocial">
+
+    <a id="modal_link_manage" href="https://admin-staging.pushup.com/#TB_inline?width=600&height=550&TB_iframe=true" class="thickbox"><button class="pushup-social-conversion-btn blue" type="submit">Manage Community</button></a>
+    <a id="modal_link_create" href="https://admin-staging.pushup.com/#TB_inline?width=600&height=550&TB_iframe=true" class="thickbox"><button class="pushup-social-conversion-btn blue" type="submit">Create Community</button></a>
+
+
     <form method="post" action="options.php">
         <?php settings_fields(PUSHUP_OPTIONS_GROUP); ?>
         <input type="hidden" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_CONFIGURED ?>]"
@@ -10,7 +53,7 @@ $options = get_option(PUSHUP_OPTIONS_NAME);
             <tr valign="top">
                 <th scope="row">Community ID</th>
                 <td>
-                    <input type="text" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_COMMUNITY ?>]"
+                    <input type="text" id="community_id" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_COMMUNITY ?>]"
                            value="<?php echo $options[PUSHUP_OPTION_COMMUNITY] ?>"/>
 
                     <p class="pushup-social-helptext">
@@ -24,7 +67,7 @@ $options = get_option(PUSHUP_OPTIONS_NAME);
             <tr valign="top">
                 <th scope="row">Community State</th>
                 <td>
-                    <div class="onoffswitch">
+                    <div id="switch" class="onoffswitch">
                         <input type="checkbox"
                                name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_ENABLED ?>]"
                                class="onoffswitch-checkbox" id="<?php echo PUSHUP_OPTION_ENABLED ?>"
@@ -39,4 +82,5 @@ $options = get_option(PUSHUP_OPTIONS_NAME);
         </table>
         <button class="pushup-social-conversion-btn blue" type="submit">Save Settings</button>
     </form>
+
 </div>
