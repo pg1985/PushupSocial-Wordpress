@@ -1,9 +1,6 @@
 <?php
 $options = get_option(PUSHUP_OPTIONS_NAME);
 add_thickbox();
-//$substr_amount is the value used to strip either 'http://' or 'https://' off of URLs to be used.
-//see if the site is an http or https by checking the 5th character.  
-$substr_amount = strcmp(substr(get_option('siteurl'), 5, 1),'s') ? 7 : 8;
 ?>
  <script>
  $(document).ready(function($){
