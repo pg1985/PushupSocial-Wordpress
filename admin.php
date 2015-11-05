@@ -33,7 +33,6 @@ add_action('admin_menu', function () use ($pushup_configured) {
 
 add_filter('plugin_action_links_' . PUSHUP_PLUGIN_BASENAME, function ($links) {
     $links[] = '<a href="' . menu_page_url(PUSHUP_PAGESLUG_CONFIG, false) . '">Settings</a>';
-    $links[] = '<a href="' . PushupSocial::LINK_JOIN . '" target="_blank">Sign Up</a>';
     return $links;
 });
 

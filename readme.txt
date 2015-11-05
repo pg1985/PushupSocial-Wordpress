@@ -1,10 +1,10 @@
 === Pushup Social ===
-Contributors: terribleplan
+Contributors: terribleplan, pg1985
 Tags: pushup, social, network, community, share
 Author URI: http://pushup.com/
 Requires at least: 3.8
-Tested up to: 4.2
-Stable tag: 4.2
+Tested up to: 4.3
+Stable tag: 4.3
 License: BSD 3-Clause
 License URI: https://github.com/PushupSocial/PushupSocial-Wordpress/blob/master/LICENSE
 
@@ -31,8 +31,12 @@ Pushup Social is a technology platform that allows you add a social network to a
 
 == Changelog ==
 
+= 1.5 =
+* Added easy community generation and communication management within the plugin.
+
 = 1.4 =
 * Add SSL support
+
 
 = 1.3 =
 * Modify splash screen

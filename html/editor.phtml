@@ -37,11 +37,6 @@ add_thickbox();
 
  </script>
 <div class="wrap pushUpSocial">
-
-    <a id="modal_link_manage" href="https://admin-staging.pushup.com/#TB_inline?width=600&height=550&TB_iframe=true" class="thickbox"><button class="pushup-social-conversion-btn blue" type="submit">Manage Community</button></a>
-    <a id="modal_link_create" href="https://admin-staging.pushup.com/#TB_inline?width=600&height=550&TB_iframe=true" class="thickbox"><button class="pushup-social-conversion-btn blue" type="submit">Create Community</button></a>
-
-
     <form method="post" action="options.php">
         <?php settings_fields(PUSHUP_OPTIONS_GROUP); ?>
         <input type="hidden" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_CONFIGURED ?>]"
@@ -54,9 +49,7 @@ add_thickbox();
                            value="<?php echo $options[PUSHUP_OPTION_COMMUNITY] ?>"/>
 
                     <p class="pushup-social-helptext">
-                        If you don't have a community ID, <a href="<?php echo PushupSocial::LINK_JOIN ?>">Sign Up
-                            Here</a> When you sign up, you will be sent your community ID in an email. Please allow some
-                        time for your community ID to be generated.
+                        If you don't have a community ID, click on 'Create Community'.
                     </p>
                 </td>
                 <!-- TODO add a "Where do I find this?" link -->
@@ -79,5 +72,7 @@ add_thickbox();
         </table>
         <button class="pushup-social-conversion-btn blue" type="submit">Save Settings</button>
     </form>
+    <a id="modal_link_manage" href="https://admin-staging.pushup.com/#TB_inline?width=600&height=550&TB_iframe=true" class="thickbox"><button class="pushup-social-conversion-btn blue">Manage Community</button></a>
+    <a id="modal_link_create" href="https://admin-staging.pushup.com/#TB_inline?width=600&height=550&TB_iframe=true" class="thickbox"><button class="pushup-social-conversion-btn blue">Create Community</button></a>
 
 </div>
