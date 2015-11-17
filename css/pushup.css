@@ -163,3 +163,87 @@ input.onoffswitch-checkbox {
     text-decoration: none;
     color: #0EB2F0;
 }
+
+.pushup-main-div {
+    width:100%;
+    height:750px;
+    background:#4990e1;
+    font-size:0.9em;
+    font-family: "Open Sans",sans-serif;
+}
+.pushup-logo {
+    float:left;
+    height: 80px;
+    width: 96%;
+    padding:1%;
+    padding-left:2%;
+    background:#4990e1;
+}
+.pushup-content{
+    height:470px;
+    width:98%;
+    padding:1%;
+}
+.pushup-form{
+    float:left;
+    width:300px;
+}
+.pushup-element {
+    padding:20px;
+    width:260px;
+    background:#fff;
+    padding-bottom : 15px;
+    line-height:1.7em;
+    display:inline-block;
+}
+
+.pushup-button{
+    box-shadow: inset 0 1px 0 #aaa,0 1px 0 rgba(0,0,0,.15);
+    background:#97C06E;
+    font-weight:bold;
+    text-align:center;
+    color:#fff;
+    margin:5px;
+    width:230px;
+    padding:10px;
+    text-decoration: none;
+    display:block;
+}
+
+.pushup-text{
+    background:#c5c5c5;
+    color:#fff;
+    margin:5px;
+    width:228px;
+    padding:10px;
+    border:1px solid #ddd;
+}
+
+.pushup-title{
+    text-align:center;
+    line-height:2em;
+    padding-bottom:10px;
+    font-weight:bold;
+    color:#555;
+
+}
+
+.pushup-text-input {
+    width:220px;
+    font-size:1.1em;
+    border:1px solid #ccc;
+    padding:4px;
+}
+
+.pushup-grey {
+    background:#ccc;
+    height:160px;
+    color:#999;
+}
+
+.pushup-computer {
+    float:right;
+    width:407px;
+    height:250px;
+    padding-top:30px;
+}
