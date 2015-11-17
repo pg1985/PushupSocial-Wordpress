@@ -8,7 +8,6 @@ add_thickbox();
      $('#modal_link_create').hide();
      $('#modal_link_manage').hide();
      var base_url = 'https://api-staging.pushup.com/network/communities?';
-     //var wp_url = 'network_id=<?php echo $options[PUSHUP_OPTION_COMMUNITY] ?>';
      var wp_url = 'third_party_name=wordpress&third_party_id=<?php echo get_option('siteurl') ?>';
 
      $.get(base_url + wp_url,
@@ -22,9 +21,6 @@ add_thickbox();
                  var defaultQuery = "https://registration-dev.pushup.com/?width=900&height=550&TB_iframe=true";
                  var queryString = defaultQuery + "&email=" + email + "&url=" + site_url + "&site=" + site_name;
                  var thirdPartyString = queryString + "&partyName=wordpress&partyId=" + site_url;
-
-                 alert(thirdPartyString);
-
 
                  $('#modal_link_create').attr("href", thirdPartyString).show();
 
