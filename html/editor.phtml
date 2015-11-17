@@ -1,6 +1,41 @@
 <?php
 $options = get_option(PUSHUP_OPTIONS_NAME);
+add_thickbox();
 ?>
+ <script>
+ $(document).ready(function($){
+
+     $('#modal_link_create').hide();
+     $('#modal_link_manage').hide();
+     var base_url = 'https://api-staging.pushup.com/network/communities?';
+     var wp_url = 'network_id=<?php echo $options[PUSHUP_OPTION_COMMUNITY] ?>';
+
+     $.get(base_url + wp_url,
+         function(data){
+             if (data.length == 0) {
+
+                 var email = '<?php echo get_option('admin_email')?>';
+
+                 var site_url = '<?php echo get_option('siteurl') ?>';
+                 var site_name = '<?php echo get_option('blogname') ?>';
+                 var defaultQuery = "https://registration-dev.pushup.com/";
+                 var queryString = "?email=" + email + "&url=" + site_url + "&site=" + site_name + "?width=800&height=550&TB_iframe=true";
+
+                 $('#modal_link_create').attr("href", defaultQuery + queryString).show();
+
+             }
+             else {
+                 setCommunityId(data['network_id']);
+                 $('#modal_link_manage').show();
+             }
+         });
+ });
+
+ function setCommunityId(data) {
+     $('#community_id').val(data + "");
+ }
+
+ </script>
 <div class="wrap pushUpSocial">
     <form method="post" action="options.php">
         <?php settings_fields(PUSHUP_OPTIONS_GROUP); ?>
@@ -10,13 +45,11 @@ $options = get_option(PUSHUP_OPTIONS_NAME);
             <tr valign="top">
                 <th scope="row">Community ID</th>
                 <td>
-                    <input type="text" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_COMMUNITY ?>]"
+                    <input type="text" id="community_id" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_COMMUNITY ?>]"
                            value="<?php echo $options[PUSHUP_OPTION_COMMUNITY] ?>"/>
 
                     <p class="pushup-social-helptext">
-                        If you don't have a community ID, <a href="<?php echo PushupSocial::LINK_JOIN ?>">Sign Up
-                            Here</a> When you sign up, you will be sent your community ID in an email. Please allow some
-                        time for your community ID to be generated.
+                        If you don't have a community ID, click on 'Create Community'.
                     </p>
                 </td>
                 <!-- TODO add a "Where do I find this?" link -->
@@ -24,7 +57,7 @@ $options = get_option(PUSHUP_OPTIONS_NAME);
             <tr valign="top">
                 <th scope="row">Community State</th>
                 <td>
-                    <div class="onoffswitch">
+                    <div id="switch" class="onoffswitch">
                         <input type="checkbox"
                                name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_ENABLED ?>]"
                                class="onoffswitch-checkbox" id="<?php echo PUSHUP_OPTION_ENABLED ?>"
@@ -39,4 +72,7 @@ $options = get_option(PUSHUP_OPTIONS_NAME);
         </table>
         <button class="pushup-social-conversion-btn blue" type="submit">Save Settings</button>
     </form>
+    <a id="modal_link_manage" href="https://admin-staging.pushup.com/#TB_inline?width=800&height=550&TB_iframe=true" class="thickbox"><button class="pushup-social-conversion-btn blue">Manage Community</button></a>
+    <a id="modal_link_create" href="https://admin-staging.pushup.com/#TB_inline?width=800&height=550&TB_iframe=true" class="thickbox"><button class="pushup-social-conversion-btn blue">Create Community</button></a>
+
 </div>

@@ -2,15 +2,15 @@
 /*
 Plugin Name: Pushup Social
 Plugin URI: http://pushup.com/
-Description: The easiest way to add a social network to your WordPress site. Simply register a community and enter the ID on the settings page.
-Version: 1.4.2
+Description: The easiest way to add a social network to your WordPress site. Simply create a new community from the panel, or link an existing community.
+Version: 1.5.0
 Author: Pushup Social
 Author URI: http://pushup.com/
 License: BSD 3 Clause
 */
 
 /*
- * Copyright (c) 2014, Pushup Social
+ * Copyright (c) 2014, 2015, Pushup Social
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,6 +64,9 @@ $pushup_configured = pushup_boolean_yesno(PUSHUP_OPTION_CONFIGURED);
 $pushup_configured_correctly = pushup_boolean_yesno(PUSHUP_OPTION_CONFIGURED_CORRECTLY);
 
 
+add_action("wp_ajax_save_community_id", function (){
+    $community_id = $_POST['community_id'];
+});
 
 add_action("admin_init", function () {
     register_setting(PUSHUP_OPTIONS_GROUP, PUSHUP_OPTIONS_NAME, function ($input) {
@@ -89,6 +92,8 @@ add_action('wp_head', function () use ($pushup_configured_correctly) {
 
 });
 
+add_action('admin_enqueue_scripts', 'load_scripts');
+
 function pushup_get_option($name) {
     $opts = get_option(PUSHUP_OPTIONS_NAME);
     return $opts[$name];
@@ -104,6 +109,10 @@ function pushup_yesno($bool) {
 
 function pushup_validate_yesno($val) {
     return (($val === "yes") ? $val : "no");
+}
+
+function load_scripts () {
+    wp_enqueue_script('$', 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js');
 }
 
 
