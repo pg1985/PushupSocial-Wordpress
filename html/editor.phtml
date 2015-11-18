@@ -2,10 +2,10 @@
 $options = get_option(PUSHUP_OPTIONS_NAME);
 add_thickbox();
 
-$site_id = get_option(PUSHUP_OPTIONS_SITE_ID);
-if (!$site_id || $site_id == ""){
+$site_id = $options[PUSHUP_OPTIONS_SITE_ID];
+if (!$site_id || $site_id == "" || $options[PUSHUP_OPTION_COMMUNITY] == ""){
     $site_id = com_create_guid();
-    add_option(PUSHUP_OPTIONS_SITE_ID, $site_id);
+    register_setting(PUSHUP_OPTIONS_GROUP, PUSHUP_OPTIONS_SITE_ID, $site_id);
 }
 
 
@@ -17,7 +17,7 @@ if (!$site_id || $site_id == ""){
      $('#modal_link_manage').hide();
 
      var base_url = 'https://api-staging.pushup.com/network/communities?';
-     var wp_url = 'network_id=<?php echo $options[PUSHUP_OPTION_COMMUNITY] ?>';
+     var wp_url = 'third_party_id=<?php echo $site_id ?>&third_party_name=wordpress';
 
      $.get(base_url + wp_url, function(data){
          if (data.length == 0) {
