@@ -9,7 +9,7 @@ add_thickbox();
      $('#modal_link_manage').hide();
 
      var base_url = 'https://api-staging.pushup.com/network/communities?';
-     var wp_url = 'third_party_name=wordpress&third_party_id=<?php echo get_option('siteurl') ?>';
+     var wp_url = 'network_id=<?php echo $options[PUSHUP_OPTION_COMMUNITY] ?>';
 
      $.get(base_url + wp_url, function(data){
          if (data.length == 0) {
@@ -48,19 +48,24 @@ add_thickbox();
                         <a class = "pushup-button thickbox" id="modal_link_create" href="https://registration-dev.pushup.com/#TB_inline?width=800&height=550&TB_iframe=true">
                             Create your Community
                         </a>
-                    </div>
-                    <div class = "pushup-element pushup-grey">
-                        <div class = "pushup-title">
-                            Manually enter your Community ID
-                        </div>
-                        <div class = "pushup-text">
-                            <input type = "text" class = "pushup-text-input" id="community_id" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_COMMUNITY ?>]"
-                                   value="<?php echo $options[PUSHUP_OPTION_COMMUNITY] ?>"/>
-                        </div>
                         <a class = "pushup-button thickbox" id="modal_link_manage" href="https://admin-staging.pushup.com/#TB_inline?width=800&height=550&TB_iframe=true">
-                            Use this ID
+                            Manage your Community
                         </a>
                     </div>
+                    <form method="post" action="options.php">
+                        <div class = "pushup-element pushup-grey">
+                            <div class = "pushup-title">
+                                Manually enter your Community ID
+                            </div>
+                            <div class = "pushup-text">
+                                <input type = "text" class = "pushup-text-input" id="community_id" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_COMMUNITY ?>]"
+                                       value="<?php echo $options[PUSHUP_OPTION_COMMUNITY] ?>"/>
+                            </div>
+                            <button class="pushup-button" type="submit">
+                                Use this ID
+                            </button>
+                        </div>
+                    </form>
                 </div>
                 <div class = "pushup-computer">
                     <img height = "250" src = "http://cdn.pushup.com/pushup_computer.png">
