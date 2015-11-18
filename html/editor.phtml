@@ -53,10 +53,10 @@ if (!$site_id || $site_id == ""){
                         <div class = "pushup-title">
                             Activate Pushup Social
                         </div>
-                        <a class = "pushup-button thickbox" id="modal_link_create" href="https://registration-dev.pushup.com/#TB_inline?width=800&height=550&TB_iframe=true">
+                        <a class = "pushup-link thickbox" id="modal_link_create" href="https://registration-dev.pushup.com/#TB_inline?width=800&height=550&TB_iframe=true">
                             Create your Community
                         </a>
-                        <a class = "pushup-button thickbox" id="modal_link_manage" href="https://admin-staging.pushup.com/#TB_inline?width=800&height=550&TB_iframe=true">
+                        <a class = "pushup-link thickbox" id="modal_link_manage" href="https://admin-staging.pushup.com/#TB_inline?width=800&height=550&TB_iframe=true">
                             Manage your Community
                         </a>
                     </div>
@@ -69,9 +69,9 @@ if (!$site_id || $site_id == ""){
                                 <input type = "text" class = "pushup-text-input" id="community_id" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_COMMUNITY ?>]"
                                        value="<?php echo $options[PUSHUP_OPTION_COMMUNITY] ?>"/>
                             </div>
-                            <a class = "pushup-button" id="modal_link_manage" href="https://admin-staging.pushup.com/#TB_inline?width=800&height=550&TB_iframe=true">
+                            <button class = "pushup-button" type="submit">
                                 Use this ID
-                            </a>
+                            </button>
                         </div>
                     </form>
                 </div>
