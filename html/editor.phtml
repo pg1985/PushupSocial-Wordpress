@@ -1,6 +1,14 @@
 <?php
 $options = get_option(PUSHUP_OPTIONS_NAME);
 add_thickbox();
+
+$site_id = get_option(PUSHUP_OPTIONS_SITE_ID);
+if (!$site_id || $site_id == ""){
+    $site_id = com_create_guid();
+    add_option(PUSHUP_OPTIONS_SITE_ID, $site_id);
+}
+
+
 ?>
  <script>
  $(document).ready(function($){
@@ -14,7 +22,7 @@ add_thickbox();
      $.get(base_url + wp_url, function(data){
          if (data.length == 0) {
 
-             var thirdPartyString = "https://registration-dev.pushup.com?partyName=wordpress&partyId=<?php echo get_option('siteurl') ?>&email=<?php echo get_option('admin_email')?>&url=<?php echo get_option('siteurl')?>&site=<?php echo get_option('blogname')?>&width=900&height=550&TB_iframe=true";
+             var thirdPartyString = "https://registration-dev.pushup.com?partyName=wordpress&partyId=<?php echo $site_id ?>&email=<?php echo get_option('admin_email')?>&url=<?php echo get_option('siteurl')?>&site=<?php echo get_option('blogname')?>&width=900&height=550&TB_iframe=true";
 
              $('#modal_link_create').attr("href", thirdPartyString).show();
          }
@@ -29,7 +37,7 @@ add_thickbox();
      $('#community_id').val(data + "");
  }
 
- </script>
+</script>
 <div class="wrap pushUpSocial">
     <form method="post" action="options.php">
         <?php settings_fields(PUSHUP_OPTIONS_GROUP); ?>

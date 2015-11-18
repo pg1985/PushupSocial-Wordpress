@@ -55,6 +55,7 @@ define("PUSHUP_OPTION_COMMUNITY", "pushupCommunityId");
 define("PUSHUP_OPTION_CONFIGURED", "pushupConfigured");
 define("PUSHUP_OPTION_CONFIGURED_CORRECTLY", "pushupConfiguredCorrectly");
 define("PUSHUP_OPTION_ENABLED", "pushupEnabled");
+define("PUSHUP_OPTIONS_SITE_ID", "pushupSiteId");
 
 
 require_once(PUSHUP_PLUGIN_DIRECTORY . "/Pushup-Common.php");
