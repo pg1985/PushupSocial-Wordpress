@@ -7,28 +7,22 @@ add_thickbox();
 
      $('#modal_link_create').hide();
      $('#modal_link_manage').hide();
+
      var base_url = 'https://api-staging.pushup.com/network/communities?';
-     var wp_url = 'network_id=<?php echo $options[PUSHUP_OPTION_COMMUNITY] ?>';
+     var wp_url = 'third_party_name=wordpress&third_party_id=<?php echo get_option('siteurl') ?>';
 
-     $.get(base_url + wp_url,
-         function(data){
-             if (data.length == 0) {
+     $.get(base_url + wp_url, function(data){
+         if (data.length == 0) {
 
-                 var email = '<?php echo get_option('admin_email')?>';
+             var thirdPartyString = "https://registration-dev.pushup.com?partyName=wordpress&partyId=<?php echo get_option('siteurl') ?>&email=<?php echo get_option('admin_email')?>&url=<?php echo get_option('siteurl')?>&site=<?php echo get_option('blogname')?>&width=900&height=550&TB_iframe=true";
 
-                 var site_url = '<?php echo get_option('siteurl') ?>';
-                 var site_name = '<?php echo get_option('blogname') ?>';
-                 var defaultQuery = "https://registration-dev.pushup.com/";
-                 var queryString = "?email=" + email + "&url=" + site_url + "&site=" + site_name + "?width=800&height=550&TB_iframe=true";
-
-                 $('#modal_link_create').attr("href", defaultQuery + queryString).show();
-
-             }
-             else {
-                 setCommunityId(data['network_id']);
-                 $('#modal_link_manage').show();
-             }
-         });
+             $('#modal_link_create').attr("href", thirdPartyString).show();
+         }
+         else {
+             setCommunityId(data['network_id']);
+             $('#modal_link_manage').show();
+         }
+     });
  });
 
  function setCommunityId(data) {
@@ -47,11 +41,11 @@ add_thickbox();
             </div>
             <div class = "pushup-content">
                 <div class = "pushup-form">
-                    <a class = "pushup-element">
+                    <div class = "pushup-element">
                         <div class = "pushup-title">
                             Activate Pushup Social
                         </div>
-                        <a class = "pushup-button" id="modal_link_create" href="https://admin-staging.pushup.com/#TB_inline?width=800&height=550&TB_iframe=true">
+                        <a class = "pushup-button thickbox" id="modal_link_create" href="https://registration-dev.pushup.com/#TB_inline?width=800&height=550&TB_iframe=true">
                             Create your Community
                         </a>
                     </div>
@@ -63,7 +57,7 @@ add_thickbox();
                             <input type = "text" class = "pushup-text-input" id="community_id" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_COMMUNITY ?>]"
                                    value="<?php echo $options[PUSHUP_OPTION_COMMUNITY] ?>"/>
                         </div>
-                        <a class = "pushup-button" id="modal_link_manage" href="https://admin-staging.pushup.com/#TB_inline?width=800&height=550&TB_iframe=true">
+                        <a class = "pushup-button thickbox" id="modal_link_manage" href="https://admin-staging.pushup.com/#TB_inline?width=800&height=550&TB_iframe=true">
                             Use this ID
                         </a>
                     </div>
