@@ -43,7 +43,10 @@ define("PUSHUP_PLUGIN_URL", plugin_dir_url(__FILE__));
 define("PUSHUP_PLUGIN_DIRECTORY", dirname(__FILE__));
 define("PUSHUP_PLUGIN_BASENAME", plugin_basename(__FILE__));
 
-require_once(PUSHUP_PLUGIN_DIRECTORY . "/config.php");
+if(file_exists(PUSHUP_PLUGIN_DIRECTORY . "/local-config.php"))
+    require_once(PUSHUP_PLUGIN_DIRECTORY . "/local-config.php");
+else
+    require_once(PUSHUP_PLUGIN_DIRECTORY . "/config.php");
 
 if (!function_exists("add_action")) {
     echo "The easiest way to add a social network to your WordPress site. Simply create a new community from the panel, or link an existing community.";
