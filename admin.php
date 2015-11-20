@@ -1,8 +1,8 @@
 <?php
-define('PUSHUP_PAGESLUG_CONFIG', 'pushupCommunityConfig');
-define('PUSHUP_PAGESLUG_SPLASH', 'pushupCommunitySplash');
 
-if (!$pushup_configured_correctly) {
+$pushup_configured = pushup_boolean_yesno(PUSHUP_OPTION_CONFIGURED);
+
+if (!$pushup_configured) {
     $unconfigured_action = function () {
         pushup_template("unconfigured");
     };
@@ -14,20 +14,10 @@ if (!$pushup_configured_correctly) {
     });
 }
 
-add_action('admin_menu', function () use ($pushup_configured) {
-    if ($pushup_configured) {
-        add_plugins_page(__('Pushup Social'), __('Pushup Social'), 'manage_options', PUSHUP_PAGESLUG_CONFIG, function () {
-            pushup_full_template("editor");
-        });
-    } else {
-        add_plugins_page(__('Pushup Social'), __('Pushup Social'), 'manage_options', PUSHUP_PAGESLUG_SPLASH, function () {
-            pushup_full_template("splash");
-        });
-
-        add_submenu_page(null, __('Pushup Social'), __('Pushup Social'), 'manage_options', PUSHUP_PAGESLUG_CONFIG, function () {
-            pushup_full_template("editor");
-        });
-    }
+add_action('admin_menu', function () {
+    add_plugins_page(__('Pushup Social'), __('Pushup Social'), 'manage_options', PUSHUP_PAGESLUG_CONFIG, function () {
+        pushup_full_template("editor");
+    });
 });
 
 

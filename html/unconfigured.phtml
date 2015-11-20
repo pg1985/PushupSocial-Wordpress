@@ -1,9 +1,9 @@
 <?php
-$linkLocation = menu_page_url(PUSHUP_PAGESLUG_SPLASH, false);
+$linkLocation = menu_page_url(PUSHUP_PAGESLUG_CONFIG, false);
 if (!$linkLocation) {
     $linkLocation = menu_page_url(PUSHUP_PAGESLUG_CONFIG, false);
 }
 ?>
 <div class="update-nag">
-    Pushup Social is not configured properly. <a href="<?php echo $linkLocation ?>">Click here to fix this</a>
+    Pushup Social is not configured. <a href="<?php echo $linkLocation ?>">Click here to fix this</a>
 </div>
