@@ -13,18 +13,13 @@ class PushupSocial {
 
     //This checks if the Community ID it is passed is valid (optionally for a given domain)
     public function validateCommunityID($community_id) {
-        $result = $this->getCommunityID($community_id);
+        $url = PUSHUP_OPTIONS_API_URL . "/network/communities/?network_id={$community_id}";
+        $result = $this->callAPI("GET", $url);
+
         $response = json_decode($result, true);
         return (isset($response["network_id"]));
     }
 
-    //This checks if the Community ID it is passed is valid (optionally for a given domain)
-    public function getCommunityID($community_id) {
-        $url = PUSHUP_OPTIONS_API_URL . "/network/communities/?network_id={$community_id}";
-        $result = $this->callAPI("GET", $url);
-
-        return $result;
-    }
 
     //This checks if the Site ID it is passed is valid (optionally for a given domain)
     public function getSiteCommunityID($site_id) {
