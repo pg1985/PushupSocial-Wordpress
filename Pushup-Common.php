@@ -27,7 +27,7 @@ class PushupSocial {
         $result = $this->callAPI("GET", $url);
 
         $response = json_decode($result, true);
-        return $response["network_id"];
+        return isset($response["network_id"]) ? $response['network_id'] : null;
     }
     /*
      * Call Pushup API
