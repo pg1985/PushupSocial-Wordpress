@@ -43,7 +43,7 @@ if (!$community_id){
                         <?php
                         if(!$is_configured) :
                             $url = PUSHUP_OPTIONS_REGISTRATION_URL ;
-                            $url .= "?partyName=wordpress&partyId={$site_id}&email" . get_option('admin_email');
+                            $url .= "?partyName=wordpress&partyId={$site_id}&email=" . get_option('admin_email');
                             $url .= "&url=" . get_option('siteurl') . "&site=" . get_option('blogname') . "&width=900&height=550&TB_iframe=true";
                         ?>
                         <a class = "pushup-link thickbox" id="modal_link_create" href="<?php echo $url  ?>">
