@@ -1,48 +1,37 @@
 <?php
-$options = get_option(PUSHUP_OPTIONS_NAME);
 add_thickbox();
 
-$site_id = $options[PUSHUP_OPTIONS_SITE_ID];
-if (!$site_id || $site_id == "" || $options[PUSHUP_OPTION_COMMUNITY] == ""){
-    $site_id = com_create_guid();
-    register_setting(PUSHUP_OPTIONS_GROUP, PUSHUP_OPTIONS_SITE_ID, $site_id);
-}
+$site_id = pushup_get_option(PUSHUP_OPTIONS_SITE_ID);
+pushup_set_option(PUSHUP_OPTIONS_SITE_ID, $site_id);
+$community_id = pushup_get_option(PUSHUP_OPTION_SAVED_COMMUNITY);
+$is_configured = pushup_boolean_yesno(PUSHUP_OPTION_CONFIGURED);
 
+if (!$community_id){
+    $site_id = sha1(uniqid(mt_rand(), true));
+    pushup_set_option(PUSHUP_OPTIONS_SITE_ID, $site_id);
+}
 
 ?>
  <script>
  $(document).ready(function($){
 
-     $('#modal_link_create').hide();
-     $('#modal_link_manage').hide();
-
-     var base_url = 'https://api-staging.pushup.com/network/communities?';
-     var wp_url = 'third_party_id=<?php echo $site_id ?>&third_party_name=wordpress';
-
-     $.get(base_url + wp_url, function(data){
-         if (data.length == 0) {
-
-             var thirdPartyString = "https://registration-dev.pushup.com?partyName=wordpress&partyId=<?php echo $site_id ?>&email=<?php echo get_option('admin_email')?>&url=<?php echo get_option('siteurl')?>&site=<?php echo get_option('blogname')?>&width=900&height=550&TB_iframe=true";
-
-             $('#modal_link_create').attr("href", thirdPartyString).show();
-         }
-         else {
-             setCommunityId(data['network_id']);
-             $('#modal_link_manage').show();
-         }
+     $( ".pushup-associate" ).click(function(event) {
+         $( ".pushup-associate-content" ).slideDown("slow");
+         event.preventDefault();
      });
- });
 
- function setCommunityId(data) {
-     $('#community_id').val(data + "");
- }
+ });
+/*
+ $(window).bind('tb_unload', function() {
+     console.log("thick box was closed");
+     location.reload();
+ });*/
 
 </script>
 <div class="wrap pushUpSocial">
     <form method="post" action="options.php">
         <?php settings_fields(PUSHUP_OPTIONS_GROUP); ?>
-        <input type="hidden" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_CONFIGURED ?>]"
-               value="yes"/>
+        <input type="hidden" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_CONFIGURED ?>]" value="no"/>
         <div class = "pushup-main-div">
             <div class = "pushup-logo">
                 <img height ="50" src = "https://s3.amazonaws.com/pushup-cdn/pushup-white.svg">
@@ -50,33 +39,65 @@ if (!$site_id || $site_id == "" || $options[PUSHUP_OPTION_COMMUNITY] == ""){
             <div class = "pushup-content">
                 <div class = "pushup-form">
                     <div class = "pushup-element">
-                        <div class = "pushup-title">
-                            Activate Pushup Social
-                        </div>
-                        <a class = "pushup-link thickbox" id="modal_link_create" href="https://registration-dev.pushup.com/#TB_inline?width=800&height=550&TB_iframe=true">
+
+                        <?php
+                        if(!$is_configured) :
+                            $url = PUSHUP_OPTIONS_REGISTRATION_URL ;
+                            $url .= "?partyName=wordpress&partyId={$site_id}&email" . get_option('admin_email');
+                            $url .= "&url=" . get_option('siteurl') . "&site=" . get_option('blogname') . "&width=900&height=550&TB_iframe=true";
+                        ?>
+                        <a class = "pushup-link thickbox" id="modal_link_create" href="<?php echo $url  ?>">
                             Create your Community
                         </a>
-                        <a class = "pushup-link thickbox" id="modal_link_manage" href="https://admin-staging.pushup.com/#TB_inline?width=800&height=550&TB_iframe=true">
+                        <div class = "pushup-title">
+                            Already have a Pushup Community? Install your existing community <a href = "#" class = "pushup-associate">here</a>.
+                        </div>
+                        <?php
+                        else :
+                        ?>
+                        <a class = "pushup-link thickbox" id="modal_link_create" href="<?php echo PUSHUP_OPTIONS_ADMIN_URL ?>/#TB_inline?width=800&height=550&TB_iframe=true">
                             Manage your Community
                         </a>
+                            <div class = "pushup-title">
+                                Already have a Pushup Community? Change your existing community <a href = "#" class = "pushup-associate">here</a>.
+                            </div>
+                        <?php
+                        endif;
+                        ?>
                     </div>
                     <form method="post" action="options.php">
-                        <div class = "pushup-element pushup-grey">
+                        <div class = "pushup-element pushup-grey pushup-associate-content">
+                            <div class = "pushup-field">
+                                <div class = "pushup-text">
+                                    <input type = "text" class = "pushup-text-input" id="community_id" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_SAVED_COMMUNITY ?>]"
+                                           value="<?php echo $community_id ?>"/>
+                                </div>
+                                <button class = "pushup-button pushup-associate-button" type="submit" value="<?php _e('Save Changes') ?>">
+                                   Save Community ID
+                                </button>
+                            </div>
                             <div class = "pushup-title">
-                                Manually enter your Community ID
+                                <ul>
+                                    <?php
+                                    if($community_id != "" && !$is_configured) :
+                                    ?>
+                                        <li> - The community id you entered is not valid.</li>
+                                        <li> - You can find your community id in the admin panel under settings.</li>
+                                    <?php
+                                    else :
+                                    ?>
+                                        <li> - You can find your community id in the admin panel under settings. </li>
+                                    <?php
+                                    endif;
+                                    ?>
+                                </ul>
                             </div>
-                            <div class = "pushup-text">
-                                <input type = "text" class = "pushup-text-input" id="community_id" name="<?php echo PUSHUP_OPTIONS_NAME ?>[<?php echo PUSHUP_OPTION_COMMUNITY ?>]"
-                                       value="<?php echo $options[PUSHUP_OPTION_COMMUNITY] ?>"/>
-                            </div>
-                            <button class = "pushup-button" type="submit">
-                                Use this ID
-                            </button>
                         </div>
+                        <input type="hidden" name="action" value="update" />
                     </form>
-                </div>
-                <div class = "pushup-computer">
-                    <img height = "250" src = "http://cdn.pushup.com/pushup_computer.png">
+                    <div class = "pushup-computer">
+                        <img align="middle" class = "computer_img" height = "450" src = "http://cdn.pushup.com/pushup_computer.png">
+                    </div>
                 </div>
             </div>
         <div>

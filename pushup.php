@@ -39,65 +39,36 @@ License: BSD 3 Clause
  *
  */
 
+define("PUSHUP_PLUGIN_URL", plugin_dir_url(__FILE__));
+define("PUSHUP_PLUGIN_DIRECTORY", dirname(__FILE__));
+define("PUSHUP_PLUGIN_BASENAME", plugin_basename(__FILE__));
+
+require_once(PUSHUP_PLUGIN_DIRECTORY . "/config.php");
+
 if (!function_exists("add_action")) {
-    echo "The Pushup Social WordPress plugin allows you to easily integrate a social network into your existing site.";
+    echo "The easiest way to add a social network to your WordPress site. Simply create a new community from the panel, or link an existing community.";
     exit;
 }
 
 
-define("PUSHUP_VERSION", "0.1.3");
-define("PUSHUP_PLUGIN_URL", plugin_dir_url(__FILE__));
-define("PUSHUP_PLUGIN_DIRECTORY", dirname(__FILE__));
-define("PUSHUP_PLUGIN_BASENAME", plugin_basename(__FILE__));
-define("PUSHUP_OPTIONS_GROUP", "pushupOptions");
-define("PUSHUP_OPTIONS_NAME", "pushupOptionsFields");
-define("PUSHUP_OPTION_COMMUNITY", "pushupCommunityId");
-define("PUSHUP_OPTION_CONFIGURED", "pushupConfigured");
-define("PUSHUP_OPTION_CONFIGURED_CORRECTLY", "pushupConfiguredCorrectly");
-define("PUSHUP_OPTION_ENABLED", "pushupEnabled");
-define("PUSHUP_OPTIONS_SITE_ID", "pushupSiteId");
-
-
-require_once(PUSHUP_PLUGIN_DIRECTORY . "/Pushup-Common.php");
-
-
-$pushup_configured = pushup_boolean_yesno(PUSHUP_OPTION_CONFIGURED);
-$pushup_configured_correctly = pushup_boolean_yesno(PUSHUP_OPTION_CONFIGURED_CORRECTLY);
-
-
-add_action("wp_ajax_save_community_id", function (){
-    $community_id = $_POST['community_id'];
-});
-
-add_action("admin_init", function () {
-    register_setting(PUSHUP_OPTIONS_GROUP, PUSHUP_OPTIONS_NAME, function ($input) {
-        $output = get_option(PUSHUP_OPTIONS_GROUP);
-
-        $validCommunityId = PushupSocial::validateCommunityID($input[PUSHUP_OPTION_COMMUNITY], get_site_url());
-
-        $output[PUSHUP_OPTION_COMMUNITY] = $input[PUSHUP_OPTION_COMMUNITY];
-
-        $output[PUSHUP_OPTION_CONFIGURED] = "yes";
-        $output[PUSHUP_OPTION_CONFIGURED_CORRECTLY] = pushup_yesno($validCommunityId);
-        $output[PUSHUP_OPTION_ENABLED] = pushup_validate_yesno($input[PUSHUP_OPTION_ENABLED]);
-
-        return $output;
-    });
-});
-
-add_action('wp_head', function () use ($pushup_configured_correctly) {
-    if (pushup_boolean_yesno(PUSHUP_OPTION_ENABLED) && $pushup_configured_correctly) {
-        $communityId = pushup_get_option(PUSHUP_OPTION_COMMUNITY);
-        include(PUSHUP_PLUGIN_DIRECTORY . '/html/snippet.phtml');
-    }
-
-});
-
-add_action('admin_enqueue_scripts', 'load_scripts');
+/**
+ * GLOBAL FUNCTIONS: Available throughout the application
+ */
 
 function pushup_get_option($name) {
     $opts = get_option(PUSHUP_OPTIONS_NAME);
     return $opts[$name];
+}
+
+function pushup_set_option($name, $value) {
+    $opts = get_option(PUSHUP_OPTIONS_NAME);
+    if($opts){
+        $opts[$name] = $value;
+        update_option(PUSHUP_OPTIONS_NAME, $opts, '', 'yes');
+    } else {
+        $opts[$name] = $value;
+        add_option(PUSHUP_OPTIONS_NAME, $opts, '', 'yes');
+    }
 }
 
 function pushup_boolean_yesno($name) {
@@ -116,6 +87,56 @@ function load_scripts () {
     wp_enqueue_script('$', 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js');
 }
 
+
+/**
+ * Initialize the Pushup Application
+ */
+
+require_once(PUSHUP_PLUGIN_DIRECTORY . "/Pushup-Common.php");
+
+$pushupApp = new PushupSocial();
+$pushup_configured = pushup_boolean_yesno(PUSHUP_OPTION_CONFIGURED);
+
+add_action("admin_init", function () use ($pushupApp) {
+    register_setting(PUSHUP_OPTIONS_GROUP, PUSHUP_OPTIONS_NAME, function ($input) use ($pushupApp) {
+        $output = get_option(PUSHUP_OPTIONS_GROUP);
+        $output[PUSHUP_OPTION_CONFIGURED] = $input[PUSHUP_OPTION_CONFIGURED];
+        $output[PUSHUP_OPTION_SAVED_COMMUNITY] = $input[PUSHUP_OPTION_SAVED_COMMUNITY];
+        if($input[PUSHUP_OPTION_SAVED_COMMUNITY]){
+            if($pushupApp->validateCommunityID($input[PUSHUP_OPTION_SAVED_COMMUNITY])){
+                $output[PUSHUP_OPTION_CONFIGURED] = "yes";
+                $output[PUSHUP_OPTION_COMMUNITY] = $input[PUSHUP_OPTION_SAVED_COMMUNITY];
+            }
+            else {
+                $output[PUSHUP_OPTION_CONFIGURED] = "no";
+                $output[PUSHUP_OPTION_COMMUNITY] = "";
+            }
+        } else if($input[PUSHUP_OPTIONS_SITE_ID]){
+            $community_id = $pushupApp->getSiteCommunityID($input[PUSHUP_OPTIONS_SITE_ID]);
+            if($community_id != ""){
+                $output[PUSHUP_OPTION_CONFIGURED] = "yes";
+                $output[PUSHUP_OPTION_COMMUNITY] = $community_id;
+                $output[PUSHUP_OPTION_SAVED_COMMUNITY] = $community_id;
+            }
+            else {
+                $output[PUSHUP_OPTION_CONFIGURED] = "no";
+                $output[PUSHUP_OPTION_COMMUNITY] = "";
+            }
+            $output[PUSHUP_OPTIONS_SITE_ID] = $input[PUSHUP_OPTIONS_SITE_ID];
+        }
+
+        return $output;
+    });
+
+});
+
+add_action('wp_head', function () use ($pushup_configured) {
+    if ($pushup_configured) {
+        include(PUSHUP_PLUGIN_DIRECTORY . '/html/snippet.phtml');
+    }
+});
+
+add_action('admin_enqueue_scripts', 'load_scripts');
 
 if (is_admin())
     require_once(PUSHUP_PLUGIN_DIRECTORY . "/admin.php");
