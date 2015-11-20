@@ -57,7 +57,7 @@ if (!function_exists("add_action")) {
 
 function pushup_get_option($name) {
     $opts = get_option(PUSHUP_OPTIONS_NAME);
-    return $opts[$name];
+    return isset($opts[$name]) ? $opts[$name] : null;
 }
 
 function pushup_set_option($name, $value) {
